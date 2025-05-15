@@ -1,4 +1,4 @@
-# 🏡 Estate: Your Real Estate Hub
+# 🏡 Estate-Hub : Your Real Estate Hub
 
 Welcome to **Estate**, the ultimate Django-powered platform where real estate dreams meet cutting-edge technology! Whether you’re a **Buyer** exploring your next dream home, a **Seller** listing your prized property, or an **Admin** managing it all seamlessly, Estate has got you covered. 🚀
 
