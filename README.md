@@ -113,7 +113,7 @@ Stores HTML templates for rendering views.<br>
 ---
 
 ## 🙋‍♂️ Author
-Made with 💙 by Darsh Gadara
+Made with 🧠&🫀 by Darsh Gadara
 ---
 ## 📄LICENSE
  This project is licensed for free for personal and commercial use. See LICENSE for details.
