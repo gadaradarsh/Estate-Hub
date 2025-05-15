@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Properties</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'style_admin.css' %}">
+</head>
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <div class="logo">Welcome, {{ request.user.username }}</div>
+      <nav class="menu">
+        <a href="{% url 'hub:DashboardAdmin' %}"><button class="menu-btn">Dashboard</button></a>
+        <a href="{% url 'hub:managePropertiesAdmin' %}"><button class="menu-btn">Manage Properties</button></a>
+        <a href="{% url 'hub:manageUser' %}"><button class="menu-btn">Manage User</button></a>
+        <a href="{% url 'hub:reviewAdmin' %}"><button class="menu-btn">Reviews</button></a>
+      </nav>
+    </aside>
+    <div class="logout-container">
+      <a href="{% url 'hub:LogoutPage' %}"><button class="logout-btn">Logout</button></a>
+    </div>
+    <main class="content">
+      <header class="header">
+        <h1>Manage Properties</h1>
+      </header>
+      <div class="add-property-section">
+        <a href="{% url 'hub:addEstateProperties' %}"><button class="add-btn">Add New Property</button></a>
+      </div>
+
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+
+      <section class="properties-list">
+        {% if listings %}
+          {% for listing in listings %}
+            <div class="property-card">
+              {% if listing.image %}
+                <img src="{{ listing.image.url }}" alt="{{ listing.title }}" class="property-image">
+              {% endif %}
+              <h2>{{ listing.title }}</h2>
+              <p><strong>Owner:</strong> {{ listing.owner.name }}</p>
+              <p><strong>Price:</strong> ₹{{ listing.price }}</p>
+              <p><strong>Bedrooms:</strong> {{ listing.num_bedrooms }}</p>
+              <p><strong>Bathrooms:</strong> {{ listing.num_bathrooms }}</p>
+              <p><strong>Square Footage:</strong> {{ listing.square_footage }}</p>
+              <p><strong>Address:</strong> {{ listing.address }}</p>
+              <div class="property-actions">
+                <a href="{% url 'hub:editProperty' listing.id %}" class="action-btn edit-btn">Edit</a>
+                <a href="{% url 'hub:deleteProperty' listing.id %}" class="action-btn delete-btn" onclick="return confirm('Are you sure you want to delete this property?')">Delete</a>
+              </div>
+            </div>
+          {% endfor %}
+        {% else %}
+          <div class="no-properties">
+            <p>No properties found. Click "Add New Property" to create one.</p>
+          </div>
+        {% endif %}
+      </section>
+    </main>
+  </div>
+</body>
+</html>

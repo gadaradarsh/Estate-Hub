@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buyer Dashboard</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'style_admin.css' %}">
+</head>
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <div class="logo">Welcome, {{ request.user.username }}</div>
+      <nav class="menu">
+        <a href="{% url 'hub:DashboardBuyer' %}"><button class="menu-btn">Dashboard</button></a>
+        <a href="{% url 'hub:managePropertiesBuyer' %}"><button class="menu-btn">Browse Properties</button></a>
+        <a href="{% url 'hub:favourite' %}"><button class="menu-btn">Favorites</button></a>
+        <a href="{% url 'hub:reviewBuyer' %}"><button class="menu-btn">Reviews</button></a>
+      </nav>
+    </aside>
+    <div class="logout-container">
+      <a href="{% url 'hub:LogoutPage' %}"><button class="logout-btn">Logout</button></a>
+    </div>
+    <main class="content">
+      <header class="header">
+        <h1>Buyer Dashboard</h1>
+      </header>
+      <div class="dashboard-stats">
+        <div class="stat-card">
+          <h3>Total Properties Viewed</h3>
+          <p>{{ total_properties_viewed }}</p>
+        </div>
+        <div class="stat-card">
+          <h3>Favorite Properties</h3>
+          <p>{{ favorite_count }}</p>
+        </div>
+        <div class="stat-card">
+          <h3>Reviews Posted</h3>
+          <p>{{ review_count }}</p>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

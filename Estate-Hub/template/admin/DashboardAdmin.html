@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="{% static 'style_admin.css' %}">
+</head>
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <div class="logo">Welcome, {{ request.user.username }}</div>
+      <nav class="menu">
+        <a href="{% url 'hub:DashboardAdmin' %}"><button class="menu-btn">Dashboard</button></a>
+        <a href="{% url 'hub:managePropertiesAdmin' %}"><button class="menu-btn">Manage Properties</button></a>
+        <a href="{% url 'hub:manageUser' %}"><button class="menu-btn">Manage User</button></a>
+        <a href="{% url 'hub:reviewAdmin' %}"><button class="menu-btn">Reviews</button></a>
+      </nav>
+    </aside>
+    <div class="logout-container">
+      <a href="{% url 'hub:LogoutPage' %}"><button class="logout-btn">Logout</button></a>
+    </div>
+
+    <main class="content">
+      <header class="header">
+        <h1>Admin Dashboard</h1>
+      </header>
+
+      <div class="dashboard-stats">
+        <div class="stat-card">
+          <h2>Total Properties</h2>
+          <p>{{ total_properties }}</p>
+        </div>
+        <div class="stat-card">
+          <h2>Total Buyers</h2>
+          <p>{{ total_buyers }}</p>
+        </div>
+        <div class="stat-card">
+          <h2>Total Sellers</h2>
+          <p>{{ total_sellers }}</p>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
+

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Review</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style_admin.css' %}">
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="logo"></div>
+            <nav class="menu">
+                <a href="{% url 'hub:DashboardBuyer' %}"><button class="menu-btn">Dashboard</button></a>
+                <a href="{% url 'hub:managePropertiesBuyer' %}"><button class="menu-btn">Browse Properties</button></a>
+                <a href="{% url 'hub:favourite' %}"><button class="menu-btn">Favorites</button></a>
+                <a href="{% url 'hub:reviewBuyer' %}"><button class="menu-btn">Reviews</button></a>
+               
+            </nav>
+        </aside>
+        <div class="logout-container">
+            <a href="{% url 'hub:LogoutPage' %}"><button class="logout-btn">Logout</button></a>
+        </div>
+        <main class="content">
+            <header class="header">
+                <h1>Add Review for {{ property.title }}</h1>
+                <a href="{% url 'hub:reviewBuyer' %}"><button class="back-btn">Back to Reviews</button></a>
+            </header>
+
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <section class="form-section">
+                <div class="property-preview">
+                    {% if property.image %}
+                        <img src="{{ property.image.url }}" alt="{{ property.title }}" class="property-image">
+                    {% endif %}
+                    <h2>{{ property.title }}</h2>
+                    <p><strong>Price:</strong> ₹{{ property.price }}</p>
+                    <p><strong>Address:</strong> {{ property.address }}</p>
+                </div>
+
+                <form method="POST" class="review-form">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="rating">Rating</label>
+                        <select id="rating" name="rating" required>
+                            <option value="">Select a rating</option>
+                            <option value="5">5 Stars - Excellent</option>
+                            <option value="4">4 Stars - Very Good</option>
+                            <option value="3">3 Stars - Good</option>
+                            <option value="2">2 Stars - Fair</option>
+                            <option value="1">1 Star - Poor</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="comment">Your Review</label>
+                        <textarea id="comment" name="comment" required placeholder="Share your experience with this property..."></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="submit-btn">Submit Review</button>
+                    </div>
+                </form>
+            </section>
+        </main>
+    </div>
+</body>
+</html> 

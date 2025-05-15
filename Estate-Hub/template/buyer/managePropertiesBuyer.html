@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Browse Properties</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'style_admin.css' %}">
+</head>
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <div class="logo">Welcome, {{ request.user.username }}</div>
+      <nav class="menu">
+        <a href="{% url 'hub:DashboardBuyer' %}"><button class="menu-btn">Dashboard</button></a>
+        <a href="{% url 'hub:managePropertiesBuyer' %}"><button class="menu-btn">Browse Properties</button></a>
+        <a href="{% url 'hub:favourite' %}"><button class="menu-btn">Favorites</button></a>
+        <a href="{% url 'hub:reviewBuyer' %}"><button class="menu-btn">Reviews</button></a>
+      </nav>
+    </aside>
+    <div class="logout-container">
+      <a href="{% url 'hub:LogoutPage' %}"><button class="logout-btn">Logout</button></a>
+    </div>
+    <main class="content">
+      <header class="header">
+        <h1>Browse Properties</h1>
+      </header>
+
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+
+      <section class="properties-list">
+        {% if listings %}
+          {% for listing in listings %}
+            <div class="property-card">
+              {% if listing.image %}
+                <img src="{{ listing.image.url }}" alt="{{ listing.title }}" class="property-image">
+              {% endif %}
+              <div class="property-details">
+                <h2>{{ listing.title }}</h2>
+                <p class="price">₹{{ listing.price }}</p>
+                <p><strong>Bedrooms:</strong> {{ listing.num_bedrooms }}</p>
+                <p><strong>Bathrooms:</strong> {{ listing.num_bathrooms }}</p>
+                <p><strong>Square Footage:</strong> {{ listing.square_footage }}</p>
+                <p><strong>Address:</strong> {{ listing.address }}</p>
+                            
+                <div class="property-actions">
+                  <a href="{% url 'hub:add_to_favorites' listing.id %}" class="action-btn favorite-btn">Add to Favorites</a>
+                  <a href="{% url 'hub:addReview' listing.id %}" class="action-btn review-btn">Review</a>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        {% else %}
+          <div class="no-properties">
+            <p>No properties available at the moment.</p>
+          </div>
+        {% endif %}
+      </section>
+    </main>
+  </div>
+</body>
+</html>

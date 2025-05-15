@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Favorites</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'style_admin.css' %}">
+</head>
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <div class="logo">Welcome, {{ request.user.username }}</div>
+      <nav class="menu">
+        <a href="{% url 'hub:DashboardBuyer' %}"><button class="menu-btn">Dashboard</button></a>
+        <a href="{% url 'hub:managePropertiesBuyer' %}"><button class="menu-btn">Browse Properties</button></a>
+        <a href="{% url 'hub:favourite' %}"><button class="menu-btn">Favorites</button></a>
+        <a href="{% url 'hub:reviewBuyer' %}"><button class="menu-btn">Reviews</button></a>
+      </nav>
+    </aside>
+    <div class="logout-container">
+      <a href="{% url 'hub:LogoutPage' %}"><button class="logout-btn">Logout</button></a>
+    </div>
+    <main class="content">
+      <header class="header">
+        <h1>My Favorite Properties</h1>
+      </header>
+
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+
+      <section class="properties-list">
+        {% if favorites %}
+          {% for favorite in favorites %}
+            <div class="property-card">
+              {% if favorite.property.image %}
+                <img src="{{ favorite.property.image.url }}" alt="{{ favorite.property.title }}" class="property-image">
+              {% endif %}
+              <div class="property-details">
+                <h2>{{ favorite.property.title }}</h2>
+                <p class="price">₹{{ favorite.property.price }}</p>
+                <div class="property-specs">
+                  <span><i class="fas fa-bed"></i> {{ favorite.property.num_bedrooms }} Bedrooms</span>
+                  <span><i class="fas fa-bath"></i> {{ favorite.property.num_bathrooms }} Bathrooms</span>
+                  <span><i class="fas fa-ruler-combined"></i> {{ favorite.property.square_footage }} sq ft</span>
+                </div>
+                <p class="address"><i class="fas fa-map-marker-alt"></i> {{ favorite.property.address }}</p>
+                <div class="property-actions">
+                  <a href="{% url 'hub:remove_from_favorites' favorite.property.id %}" class="action-btn delete-btn">Remove from Favorites</a>
+                  <a href="{% url 'hub:addReview' favorite.property.id %}" class="action-btn review-btn">Review</a>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        {% else %}
+          <div class="no-properties">
+            <p>You haven't added any properties to your favorites yet.</p>
+          </div>
+        {% endif %}
+      </section>
+    </main>
+  </div>
+</body>
+</html>

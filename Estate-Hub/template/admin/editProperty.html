@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Property</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style_admin.css' %}">
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="logo"></div>
+            <nav class="menu">
+                <a href="{% url 'hub:DashboardAdmin' %}"><button class="menu-btn">Dashboard</button></a>
+                <a href="{% url 'hub:managePropertiesAdmin' %}"><button class="menu-btn">Manage Properties</button></a>
+                <a href="{% url 'hub:manageUser' %}"><button class="menu-btn">Manage User</button></a>
+                <a href="{% url 'hub:reviewAdmin' %}"><button class="menu-btn">Reviews</button></a>
+            </nav>
+        </aside>
+        <div class="logout-container">
+            <a href="{% url 'hub:LogoutPage' %}"><button class="logout-btn">Logout</button></a>
+        </div>
+        <main class="content">
+            <header class="header">
+                <h1>Edit Property</h1>
+            </header>
+
+            <section class="form-section">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <form method="post" enctype="multipart/form-data" class="property-form">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="form-group">
+                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.errors %}
+                                <div class="error-message">
+                                    {{ field.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    <div class="form-actions">
+                        <button type="submit" class="submit-btn">Update Property</button>
+                        <a href="{% url 'hub:managePropertiesAdmin' %}" class="cancel-btn">Cancel</a>
+                    </div>
+                </form>
+            </section>
+        </main>
+    </div>
+</body>
+</html> 

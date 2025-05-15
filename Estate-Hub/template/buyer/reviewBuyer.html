@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Property Reviews</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'style_admin.css' %}">
+</head>
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <div class="logo">Welcome, {{ request.user.username }}</div>
+      <nav class="menu">
+        <a href="{% url 'hub:DashboardBuyer' %}"><button class="menu-btn">Dashboard</button></a>
+        <a href="{% url 'hub:managePropertiesBuyer' %}"><button class="menu-btn">Browse Properties</button></a>
+        <a href="{% url 'hub:favourite' %}"><button class="menu-btn">Favorites</button></a>
+        <a href="{% url 'hub:reviewBuyer' %}"><button class="menu-btn">Reviews</button></a>
+      </nav>
+    </aside>
+    <div class="logout-container">
+      <a href="{% url 'hub:LogoutPage' %}"><button class="logout-btn">Logout</button></a>
+    </div>
+    <main class="content">
+      <header class="header">
+        <h1>Property Reviews</h1>
+      </header>
+
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+
+      <section class="properties-list">
+        {% if properties %}
+          {% for property in properties %}
+            <div class="property-card">
+              {% if property.image %}
+                <img src="{{ property.image.url }}" alt="{{ property.title }}" class="property-image">
+              {% endif %}
+              <h2>{{ property.title }}</h2>
+              <p><strong>Price:</strong> ₹{{ property.price }}</p>
+              <p><strong>Address:</strong> {{ property.address }}</p>
+              
+              <div class="reviews-section">
+                <h3>Reviews</h3>
+                {% with property_reviews=property.reviews.all %}
+                  {% if property_reviews %}
+                    {% for review in property_reviews %}
+                      <div class="review-item">
+                        <div class="review-header">
+                          <span class="reviewer">{{ review.reviewer.username }}</span>
+                          <span class="rating">★ {{ review.rating }}</span>
+                        </div>
+                        <p class="review-comment">{{ review.comment }}</p>
+                        <small class="review-date">{{ review.created_at|date:"F d, Y" }}</small>
+                      </div>
+                    {% endfor %}
+                  {% else %}
+                    <p class="no-reviews">No reviews yet</p>
+                  {% endif %}
+                {% endwith %}
+              </div>
+
+              <div class="property-actions">
+                <a href="{% url 'hub:addReview' property.id %}" class="action-btn add-review-btn">Add Review</a>
+              </div>
+            </div>
+          {% endfor %}
+        {% else %}
+          <div class="no-properties">
+            <p>No properties available for review.</p>
+          </div>
+        {% endif %}
+      </section>
+    </main>
+  </div>
+</body>
+</html>
